@@ -1,1 +1,30 @@
+<properties>
+    <docker.image.prefix> xxxx< /docker.image.prefix>
+    <docker.image.version>${project.version}</docker.image.version>
+</properties>
 
+
+<build>
+    <plugins>
+        < !--Spring Boot Maven Plugin-->
+        <plugin>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-maven-plugin</artifactId>
+        </plugin>
+
+        <plugin>
+            <groupId>com.spotify</groupId>
+            <artifactId>dockerfile-maven-plugin</artifactId>
+            <version>1.4.10</version>
+            <configuration>
+            <!-- docker.image.prefix :这个变量作为将来在Harbor 远程仓库的路径
+            前缀，我们把他提取出来，在maven 构建的时候动态指定 -->
+                <repository>${docker.image.prefix}/${project.artifactld}</repository>
+                <tag>${docker.image.version}</tag>
+                <buildArgs>
+                    <JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
+                </buildArgs>
+            </configuration>
+        </plugin>
+    </plugins>
+</build>
